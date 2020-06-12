@@ -22,7 +22,5 @@ class PaperStudent extends Model
     public function student() {
         return $this->belongsTo(Student::class);
     }
-    public function paper() {
-        return $this->belongsTo(Paper::class);
-    }
+
 }

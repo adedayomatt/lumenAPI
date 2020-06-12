@@ -19,7 +19,12 @@ class Student extends Model
     ];
 
     public function paperStudent() {
-        return $this->hasOne(PaperStudent::class);
+        return $this->hasMany(PaperStudent::class);
     }
+
+    public function answers() {
+        return $this->hasMany(Question::class, 'question_id');
+    }
+
 
 }

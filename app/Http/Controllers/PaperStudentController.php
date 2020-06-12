@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Paper;
-use App\PaperStudent;
 use App\Question;
+use App\PaperStudent;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class PaperStudentController extends Controller
@@ -103,8 +105,58 @@ class PaperStudentController extends Controller
 
 
 
+    /**********************Adedayo Matthews Codes here*************************** */
+
+    public function markingGuides(){
+        return $this->successResponse($this->getQuestions(Paper::TYPE_GUIDE)); 
+    }
+
+    public function submissions(){
+        return $this->successResponse($this->getQuestions(Paper::TYPE_SUBMISSION)); 
+    }
+
+    public function markSubmissions(){
+        /**
+         * 
+         * I don't know which student to mark and record for because student id is not specified for answers on the questions table (where you said answers are also stored) 
+         * I also don't get where there is question_id on the paper_students student if you are using the table to record scores
+         *
+         * */ 
+        return $this->successResponse($this->mark($student_id = 1, $question_id = 1)); 
+    }
 
 
 
 
+    /**
+     * Get marking guides or submissions. Specify which with the $type.
+     * 
+     * @param String $type
+     * 
+     * @return Collection
+     */
+    private function getQuestions($type){
+        return Paper::where('paper_type', $type)->firstorfail()->questions;
+    }
+
+    private function mark($student_id, $question_id){
+        $paper = Paper::where('paper_type', Paper::TYPE_SUBMISSION)->firstorfail();
+        $guides =  $this->getQuestions(Paper::TYPE_GUIDE);
+        $submissions =  $this->getQuestions(Paper::TYPE_SUBMISSION);
+        $correct = 0;
+
+        foreach($submissions as $submission){
+            if($submission->is_answer_correct){
+                $correct++;
+            }
+        }
+        $score = ($correct/$guides->count())*100;
+ 
+        return  $paper->paperStudent()->create([
+            'student_id' => $student_id, //which student???
+            'question_id' => $question_id, // How come questions???
+            'marked' => true,
+            'score' => $score
+        ]);
+     }
 }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paper extends Model
 {
+  const TYPE_GUIDE = 'Marking guide';
+  const TYPE_SUBMISSION = 'Submission';
 
     /**
      * The attributes that are mass assignable.
@@ -13,12 +15,14 @@ class Paper extends Model
      * @var array
      */
     protected $fillable = [
-        'subject_id',
         'paper_type',
-
     ];
 
-  public function subject(){
-        return $this->belongsTo(Subject::class);
-  }
+    public function questions(){
+      return $this->hasMany(Question::class);
+    }
+
+    public function paperStudent(){
+      return $this->hasMany(PaperStudent::class);
+    }
 }

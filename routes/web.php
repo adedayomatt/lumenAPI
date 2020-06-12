@@ -80,3 +80,9 @@ $router->post('/subjects', 'SubjectController@store');
 $router->put('/subjects/{id}', 'SubjectController@update');
 $router->patch('/subjects/{id}', 'SubjectController@update');
 $router->delete('/subjects/{id}', 'SubjectController@delete');
+
+
+/*********Adeadyo Matthews Code************* */
+$router->get('/guides', 'PaperStudentController@markingGuides');
+$router->get('/submissions', 'PaperStudentController@submissions');
+$router->get('/mark', 'PaperStudentController@markSubmissions');

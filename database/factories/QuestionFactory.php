@@ -21,6 +21,6 @@ $factory->define(Question::class, function (Faker $faker) {
         'question_no' => $faker->numberBetween(1,100),
         'answer' => $faker->randomElement($array = array ('a','b','c', 'd')),
         'subject_id' => $faker->numberBetween(1,4),
-
+        'paper_id' =>  $faker->numberBetween(1,2),
     ];
 });
